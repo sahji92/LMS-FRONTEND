@@ -1,3 +1,6 @@
+#Reminders
+1.) Re-add isAuthenticated middleware in /getCourses route of backend.(now its not working with middleware, axios error arise,403 user not authenticated also arise)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
