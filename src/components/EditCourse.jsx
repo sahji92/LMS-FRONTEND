@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Modal } from "react-bootstrap";
+import { Button, Col, Form} from "react-bootstrap";
 import { getSession } from "../utils/sessionMethods";
 import apiConnection from "../apiConnection";
 import { apiEndpoints, httpMethods } from "../constants/constants";
