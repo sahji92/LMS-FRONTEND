@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal } from "react-bootstrap";
 import { getSession } from "../utils/sessionMethods";
 import apiConnection from "../apiConnection";
 import { apiEndpoints, httpMethods } from "../constants/constants";
+import { useParams } from "react-router-dom";
 
-export default function AddCourse(props) {
+export default function EditCourse(props) {
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -12,55 +14,48 @@ export default function AddCourse(props) {
     discounted_price: "",
     teacher_id: getSession("userId"),
   });
+
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
+  let {id}=useParams();
 
-  const getData = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+      const getData = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const createCourse = async (e) => {
+  const updateCourse = async (e) => {
     e.preventDefault();
     if (parseInt(formData.discounted_price) > parseInt(formData.price)) {
       setError("Discount cant be grater than price");
       setShowError(true);
       return;
     }
-    const data = await apiConnection(
-      apiEndpoints.CREATE_COURSES_ENDPOINT,
-      httpMethods.POST,formData
-    );
-    if(data.status===201){
-      setFormData({
-        name: "",
-        description: "",
-        price: "",
-        discounted_price: "",
-        teacher_id: getSession("userId")
-      })
-      props.onHide()
+    const data = await apiConnection(`${apiEndpoints.UPDATE_COURSE_ENDPOINT}/${id}`,httpMethods.PUT,formData);
+    if(data.status===200){
+      setError("course updated successfully");
+      setShowError(true);
     }
     else{
-      setError("Some technical error plz try again lator.");
+      setError("Some technical error, plz try again lator.");
       setShowError(true);
       return;
     }
   };
+    const getCourseData= async()=>{
+      const data = await apiConnection(`${apiEndpoints.GET_COURSE_ENDPOINT}/${id}`,httpMethods.GET);
+      if (data.data.status === 200) {
+       setFormData([...data.data])
+                               }
+      else {
+         console.log(data)
+           }
+    }
+
+      useEffect(() => {
+          getCourseData()
+              },[id]);
 
   return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id='"contained-modal-title-vcenter"'>
-          Add Course
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>Centered Modal</h4>
         <Form>
           <Form.Group as={Col} controlId="formGridName">
             <Form.Label>Name</Form.Label>
@@ -113,14 +108,11 @@ export default function AddCourse(props) {
             className="mt-3 w-100 rounded rounded-3"
             variant="primary"
             type="submit"
-            onClick={(e) =>createCourse(e)}
+            onClick={(e) =>updateCourse(e)}
           >
-            Add Course
+            Update Course
           </Button>
           {showError && <p className="text-danger" >{error}</p>}
         </Form>
-      </Modal.Body>
-      <Modal.Footer><Button onClick={props.onHide}>Close</Button></Modal.Footer>
-    </Modal>
   );
 }

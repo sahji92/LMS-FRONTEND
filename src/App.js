@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getSession } from "./utils/sessionMethods";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./components/Dashboard";
+import EditCourse from "./components/EditCourse";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
 
       <Route path="/" element={<DashboardLayout />}>
         <Route index element={<Dashboard/>} />
+        <Route path="/editCourse/:id" element={<EditCourse/>} />
       </Route>
     </Routes>
   );

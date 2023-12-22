@@ -4,10 +4,14 @@ import { apiEndpoints, httpMethods } from "../constants/constants";
 import { getSession } from "../utils/sessionMethods";
 import {Button,Card,Row} from "react-bootstrap";
 import AddCourse from "./AddCourse";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const[courses,setCourses]=useState([])
+
   const[modalShow,setModalShow]=useState(false);
+
+  const navigate=useNavigate()
 
   const getCourses = async () => {
     const data = await apiConnection(
@@ -20,9 +24,7 @@ export default function Dashboard() {
     } 
   };
 
-  useEffect(() => {
-    getCourses();
-  }, []);
+  useEffect(() => {getCourses()},[]);
 
   return (
     <div className="w-100 p-3">
@@ -38,6 +40,10 @@ export default function Dashboard() {
               <Card.Text>
                 {item.description}
               </Card.Text>
+              <Card.Footer className="bg-white">
+              <Button variant="primary" onClick={() => setModalShow(true)}>Add Video</Button> 
+              <Button variant="warning" onClick={() => navigate(`/editCourse/${item._id}`)}>Edit Course</Button> 
+              </Card.Footer>
             </Card.Body>
           </Card>
       ))}

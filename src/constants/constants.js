@@ -2,11 +2,15 @@ export const apiEndpoints={
     REGISTER_ENDPOINT:'/registerUser',
     LOGIN_ENDPOINT:'/userLogin',
     LOGOUT_ENDPOINT:'/userLogout',
-    GET_COURSES_ENDPOINT:'/getCourses'
+    GET_COURSES_ENDPOINT:'/getCourses',
+    CREATE_COURSE_ENDPOINT:'/createCourse',
+    GET_COURSE_ENDPOINT:'/getCourse',
+    UPDATE_COURSE_ENDPOINT:'/updateCourse'
 
 }
 
 export const httpMethods={
     POST:'POST',
-    GET:'GET'
+    GET:'GET',
+    PUT:'PUT'
 }

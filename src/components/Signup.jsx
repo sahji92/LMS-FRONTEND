@@ -52,7 +52,7 @@ const registerUser=async (e)=>{
           </Form.Select>
 
 
-        <Button variant="primary" type="submit" onClick={(e)=>registerUser(e)}>
+        <Button className='mt-3 w-100 rounded rounded-3' variant="primary" type="submit" onClick={(e)=>registerUser(e)}>
           Submit
         </Button>
       </Form>
