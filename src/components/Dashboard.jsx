@@ -20,11 +20,11 @@ export default function Dashboard() {
     );
     if (data.status === 200) {
       setCourses([...data.data]);
-      console.log(data)
     } 
+    else
+    console.log(data)
   };
-
-  useEffect(() => {getCourses()},[]);
+  useEffect(() => {getCourses()},[modalShow]);
 
   return (
     <div className="w-100 p-3">
