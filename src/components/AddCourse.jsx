@@ -2,12 +2,16 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getSession } from '../utils/sessionMethods';
+import apiconnection from '../apiConnection';
 import { apiEndpoints, httpMethods } from '../constants/constants';
-import apiConnection from '../apiConnection';
+import Loader from './Loader';
 
-export default function AddCourse (props) {
+export default function (props) {
+
+    const [isLoading,setIsLoading] = useState(false);
+
 
     const [formData,setFormData] = useState({
         name: '',
@@ -29,7 +33,8 @@ export default function AddCourse (props) {
 
     const uploadImage = async () => {
         console.log('Entered to update data',image)
-        const data = await apiConnection(
+        setIsLoading(true)
+        const data = await apiconnection(
             apiEndpoints.UPLOAD_COURSE_IMAGE_ENDPOINT,
             httpMethods.POST,
             {courseImage: image},
@@ -51,9 +56,9 @@ export default function AddCourse (props) {
             setShowError(true)
             return;
         }
-        const data = await apiConnection(apiEndpoints.CREATE_COURSE_ENDPOINT,httpMethods.POST,{...formData,image: uploadImageRes.data})
-
-        if(data.status === 201) {
+        const data = await apiconnection(apiEndpoints.CREATE_COURSE_ENDPOINT,httpMethods.POST,{...formData,image: uploadImageRes.data.data})
+        setIsLoading(false)
+        if(data.data.status === 201) {
             setFormData({
                 name: '',
                 description:'',
@@ -82,6 +87,7 @@ export default function AddCourse (props) {
         </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+            {isLoading ? <Loader /> :
             <Form>
                 <Form.Group className='mb-3' as={Col} controlId="formGridName">
                     <Form.Label>Name</Form.Label>
@@ -113,6 +119,7 @@ export default function AddCourse (props) {
                 </Button>
                 {showError && <p className="text-danger" >{error}</p>}
             </Form>
+            }
         </Modal.Body>
         <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

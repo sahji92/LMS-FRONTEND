@@ -3,7 +3,7 @@ import { Button, Col, Form} from "react-bootstrap";
 import { getSession } from "../utils/sessionMethods";
 import apiConnection from "../apiConnection";
 import { apiEndpoints, httpMethods } from "../constants/constants";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditCourse(props) {
 
@@ -14,7 +14,7 @@ export default function EditCourse(props) {
     discounted_price: "",
     teacher_id: getSession("userId"),
   });
-
+const navigate=useNavigate();
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
   let {id}=useParams();
@@ -34,6 +34,7 @@ export default function EditCourse(props) {
     if(data.status===200){
       setError("course updated successfully");
       setShowError(true);
+      navigate('/')
     }
     else{
       setError("Some technical error, plz try again lator.");
@@ -44,7 +45,7 @@ export default function EditCourse(props) {
     const getCourseData= async()=>{
       const data = await apiConnection(`${apiEndpoints.GET_COURSE_ENDPOINT}/${id}`,httpMethods.GET);
       if (data.data.status === 200) {
-       setFormData([...data.data])
+       setFormData([{...data.data}])
                                }
       else {
          console.log(data)

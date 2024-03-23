@@ -7,6 +7,8 @@ import { getSession } from "./utils/sessionMethods";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./components/Dashboard";
 import EditCourse from "./components/EditCourse";
+import CourseVideos from "./components/CourseVideos";
+import MyCourses from "./components/MyCourses";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
       <Route path="/" element={<DashboardLayout />}>
         <Route index element={<Dashboard/>} />
         <Route path="/editCourse/:id" element={<EditCourse/>} />
+        <Route path='courseVideos/:course_id' element={<CourseVideos/>} />
+        <Route path='myCourses' element={<MyCourses/>} />
       </Route>
     </Routes>
   );
