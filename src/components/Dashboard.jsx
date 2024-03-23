@@ -26,7 +26,7 @@ export default function Dashboard() {
      : `${apiEndpoints.GET_ALL_COURSES_ENDPOINT}`
     const data = await apiconnection(url,httpMethods.GET)
     setIsLoading(false)
-    if(data.data.status === 201) {
+    if(data.data.status === 200||data.data.status === 201) {
         if (getSession('userType') !== 'teacher') {
             let filteredData
             const purchasedData = await apiconnection(`${apiEndpoints.GET_USER_ORDERS_ENDPOINT}/${getSession('userid')}`,httpMethods.GET)
@@ -53,7 +53,7 @@ export default function Dashboard() {
     setIsLoading(true);
     const data = await apiconnection(apiEndpoints.CREATE_ORDER_ENDPOINT,httpMethods.POST,{course: courseId})
     setIsLoading(false)
-    if(data.data.status === 201) {
+    if(data.data.status === 200) {
         console.log(data)
         alert(data.data.message)
     } else {
